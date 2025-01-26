@@ -1,0 +1,79 @@
+# Version format ex. "0.0.1"
+version: "0.0.5"                            # Flow specification version
+
+# Basic metadata for the agent
+metadata:
+  name: "movie-recommendation"                                # Unique identifier
+  description: "AI-based movie recommendation system that suggests movies based on user preferences and viewing history."  # Flow purpose
+  author: "sunilk"                              # Must match your account username
+  tags: [movies, recommendations, entertainment, AI]                        # Keywords for categorization
+  private: false                                       # Access control setting
+
+# Define the input variables required
+inputs:
+  movie_genre_preferences:                              # First input parameter
+    type: string                                       # Currently only String format
+    description: "Specify your favorite movie genres (e.g., Action, Comedy, Drama, etc.)."
+    required: true
+    example: "Action, Sci-Fi, Thriller"
+  
+  mood:                                              # Second input parameter
+    type: string
+    description: "Describe your current mood to help the AI suggest appropriate movies."
+    required: true
+    example: "I'm feeling adventurous and want something fast-paced and thrilling."
+
+  watch_history:                                              # Third input parameter
+    type: string
+    description: "Provide a list of movies you've recently watched to give the AI context."
+    required: false
+    example: "Inception, Avengers: Endgame, The Matrix"
+  language_preferences:                                          # Fourth input parameter
+    type: string
+    description: "Specify your preferred language for the movie recommendations."
+    required: false
+    example: "Hindi, English"
+  
+# LLM configuration
+model:
+  provider: "openai"                            # e.g., anthropic, openai, meta, etc.
+  name: "gpt-4o"                                   # Specific model identifier
+
+# Dataset configuration (Optional)
+# dataset:
+#   source: "author_name/dataset_name"                   # Make sure this dataset exists
+
+# Prompt template configuration
+prompt: |
+  You are a movie recommendation assistant. Based on the following inputs:
+  - Favorite Genres: {movie_genre_preferences}
+  - Mood: {mood}
+  - Recent Movies Watched (if any): {watch_history}
+  Suggest a list of 5 movies that I should watch. Please make sure to:
+  1. Recommend movies from the user's preferred genres.
+  2. Match the suggestions to the user's current mood.
+  3. If the user has provided a watch history, avoid recommending movies they've already seen.
+  4. If the user has provided langauge preferences, consider them while recommending movies.
+  5. Provide a brief description of each movie and why it fits the user’s preferences.
+
+  Structure the response in html(in a div without metaData) and tailwind-css(use className instead of class) with:
+  - Movie Title
+  - Genre(s)
+  - Brief Description
+  - Why it's Recommended
+
+# ReadMe configuration
+readme: |
+  The Movie Recommendation flow suggests movies based on user preferences, mood, and watch history. By analyzing these inputs, it provides personalized movie recommendations tailored to the user.
+
+  Features:
+  - Personalized movie genre-based recommendations
+  - Mood-based suggestions
+  - Avoids recommending movies already watched
+  - Provides a brief explanation for each recommendation
+
+  Example Usage:
+  Input1: "Action, Sci-Fi, Thriller"
+  Input2: "I'm feeling adventurous and want something fast-paced and thrilling."
+  Input3: "Inception, Avengers: Endgame, The Matrix"
+  Output: "1. Mad Max: Fury Road – Genre: Action, Sci-Fi – A fast-paced post-apocalyptic action movie with stunning visuals. Perfect for a thrilling mood."
